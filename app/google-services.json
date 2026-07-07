@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "4038390886",
+    "project_id": "unitcalc-5857d",
+    "storage_bucket": "unitcalc-5857d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:4038390886:android:2570a608e64b4f1a4fa9a7",
+        "android_client_info": {
+          "package_name": "com.joo.unitcalc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCg23ULMLGXukLSAJjaea0oPF1OUvXEDP0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

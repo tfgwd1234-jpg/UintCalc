@@ -1,0 +1,109 @@
+<resources>
+    <string name="app_name">UnitCalc</string>
+    <string name="smart_unit_title">Smart Unit Calculator</string>
+    <string name="category_weight">⚖️ Weight</string>
+    <string name="category_volume">🥤 Volume</string>
+    <string name="category_count">📦 Count</string>
+    <string name="g_kg">g / kg</string>
+    <string name="ml_l">ml / L</string>
+    <string name="pcs">pcs</string>
+    <string name="comparison_standard_qty">Reference Qty</string>
+    <string name="per_100g">100g</string>
+    <string name="per_10g">10g</string>
+    <string name="per_1kg">1kg</string>
+    <string name="per_100ml">100ml</string>
+    <string name="per_10ml">10ml</string>
+    <string name="per_1l">1L</string>
+    <string name="per_1pc">1 pc</string>
+    <string name="per_10pcs">10 pcs</string>
+    <string name="per_100pcs">100 pcs</string>
+    <string name="item_name_placeholder">Enter product name...</string>
+    <string name="price_placeholder">Enter price</string>
+    <string name="add_product">Add Product</string>
+    <string name="save_comparison">Save</string>
+    <string name="save">Save</string>
+    <string name="new_comparison">New Comparison</string>
+    <string name="tab_home">Home</string>
+    <string name="tab_history">History</string>
+    <string name="tab_settings">Settings</string>
+    <string name="settings_title">Settings</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="contact_suggestions">Feedback &amp; Suggestions</string>
+    <string name="past_history_title">History</string>
+    <string name="past_history_card_title">History</string>
+    <string name="empty_history">No history found.</string>
+    <string name="delete_comparison">Delete</string>
+    <string name="delete_confirm_title">Delete History 🗑️</string>
+    <string name="delete_confirm_msg">Are you sure you want to delete \'%s\'?</string>
+    <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
+    <string name="change">Change</string>
+    <string name="comparison_name">Comparison Name</string>
+    <string name="comparison_name_placeholder">e.g., Milk, Tissue</string>
+    <string name="item_name">Name</string>
+    <string name="price_won">Price</string>
+    <string name="capacity_label">Capacity</string>
+    <string name="capacity_g_kg">Capacity (g/kg)</string>
+    <string name="capacity_ml_l">Capacity (ml/L)</string>
+    <string name="bundle_count_label">Bundle Count</string>
+    <string name="bundle_capacity_label">Bundle Capacity</string>
+    <string name="pcs_bundle">Count (Bundle)</string>
+    <string name="best_deal_title">Best Deal Choice</string>
+    <string name="best_deal_desc">This provides the best value for your money ✨</string>
+    <string name="premium_upgrade_ad">Upgrade to Premium! Remove Ads &amp; Compare via Barcode 🚀</string>
+    <string name="save_desc">Save current comparison to your history.</string>
+    <string name="comparison_type_select">Select Comparison Type:</string>
+    <string name="edit_comparison_name_title">Edit Comparison Name 🏷️</string>
+    <string name="save_comparison_title">Save Comparison 💾</string>
+    <string name="save_time">Saved: %s</string>
+    <string name="basis">Basis: %s</string>
+    <string name="field_entering">Entering %s</string>
+    <string name="price_unit"></string>
+    <string name="won_symbol">$</string>
+    <string name="more">More</string>
+    <string name="keyboard_mode">Keyboard Mode</string>
+    <string name="mart_keypad">Mart Easy Keypad</string>
+    <string name="keypad_close">Close Keypad</string>
+    <string name="new_comparison_start">Start New Comparison ✨</string>
+    <string name="create">Create</string>
+    <string name="input_mode_toggle">Toggle Input Mode</string>
+    <string name="edit_possible">Editable</string>
+    <string name="delete">Delete</string>
+    <string name="product_label">Product %s</string>
+    <string name="per_unit_format">per %s</string>
+    <string name="cheaper_by_desc">Approx. %s cheaper than other products 💰</string>
+    <string name="expensive_desc">(%1$s / %2$s more expensive)</string>
+    <string name="back_press_exit_msg">Press back again to exit.</string>
+    <string name="validation_empty_title">Please enter a name.</string>
+    <string name="unit_settings_title">Unit Settings</string>
+    <string name="volume_small_label">Volume (Small)</string>
+    <string name="volume_large_label">Volume (Large)</string>
+    <string name="weight_large_label">Weight (Large)</string>
+    <string name="weight_small_label">Weight (Small)</string>
+
+    <!-- Tutorial / Onboarding strings -->
+    <string name="tutorial_title">Quick Guide 📖</string>
+    <string name="tutorial_btn_next">Next</string>
+    <string name="tutorial_btn_prev">Prev</string>
+    <string name="tutorial_btn_skip">Skip</string>
+    <string name="tutorial_btn_done">Get Started</string>
+    <string name="tutorial_show_guide">Show Guide</string>
+
+    <string name="tutorial_welcome_title">Welcome to UnitCalc! 🎉</string>
+    <string name="tutorial_welcome_desc">Compare prices across different capacities, packages, and units easily to find the best deal!</string>
+
+    <string name="tutorial_home_units_title">1. Category &amp; Reference Qty ⚖️</string>
+    <string name="tutorial_home_units_desc">Choose Weight, Volume, or Count tabs. Underneath, select the standard quantity (e.g. 100g, 1kg, 100ml) to define the baseline for price comparison.</string>
+
+    <string name="tutorial_home_best_title">2. Smart Best Choice 🏆</string>
+    <string name="tutorial_home_best_desc">Fill in the price and capacity for each product. The app automatically calculates the best deal and highlights it with a prominent "BEST CHOICE" badge and detailed savings!</string>
+
+    <string name="tutorial_home_actions_title">3. New, Add, and Save 💾</string>
+    <string name="tutorial_home_actions_desc">Use "New Comparison" to clear and start fresh. Tap "Add Product" to add more items. Tap "Save" to keep this comparison in your local History.</string>
+
+    <string name="tutorial_history_title">4. History &amp; Reordering 🗂️</string>
+    <string name="tutorial_history_desc">In the History tab, you can tap any previous session to load it back. You can also drag and drop items vertically to reorder them or edit their titles easily.</string>
+
+    <string name="tutorial_settings_title">5. Custom Settings ⚙️</string>
+    <string name="tutorial_settings_desc">Go to Settings to customize small and large units for Weight and Volume (e.g., fl.oz, gal, oz, lb). All product inputs will update automatically!</string>
+</resources>

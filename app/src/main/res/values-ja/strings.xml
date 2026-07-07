@@ -1,0 +1,109 @@
+<resources>
+    <string name="app_name">単位計算機</string>
+    <string name="smart_unit_title">スマート単位比較機</string>
+    <string name="category_weight">⚖️ 重量</string>
+    <string name="category_volume">🥤 体積</string>
+    <string name="category_count">📦 個数</string>
+    <string name="g_kg">g / kg</string>
+    <string name="ml_l">ml / L</string>
+    <string name="pcs">個</string>
+    <string name="comparison_standard_qty">基準単位量</string>
+    <string name="per_100g">100g当り</string>
+    <string name="per_10g">10g当り</string>
+    <string name="per_1kg">1kg当り</string>
+    <string name="per_100ml">100ml当り</string>
+    <string name="per_10ml">10ml当り</string>
+    <string name="per_1l">1L当り</string>
+    <string name="per_1pc">1個当り</string>
+    <string name="per_10pcs">10個当り</string>
+    <string name="per_100pcs">100個当り</string>
+    <string name="item_name_placeholder">商品名入力...</string>
+    <string name="price_placeholder">価格を入力</string>
+    <string name="add_product">商品追加</string>
+    <string name="save_comparison">比較保存</string>
+    <string name="save">保存</string>
+    <string name="new_comparison">新規比較</string>
+    <string name="tab_home">ホーム</string>
+    <string name="tab_history">履歴</string>
+    <string name="tab_settings">設定</string>
+    <string name="settings_title">設定</string>
+    <string name="privacy_policy">個人情報保護方針</string>
+    <string name="contact_suggestions">お問い合わせ・ご提案</string>
+    <string name="past_history_title">履歴</string>
+    <string name="past_history_card_title">過去の比較履歴</string>
+    <string name="empty_history">比較履歴がありません。</string>
+    <string name="delete_comparison">比較削除</string>
+    <string name="delete_confirm_title">比較履歴の削除 🗑️</string>
+    <string name="delete_confirm_msg">「%s」を削除しますか？</string>
+    <string name="cancel">キャンセル</string>
+    <string name="close">閉じる</string>
+    <string name="change">変更</string>
+    <string name="comparison_name">比較名</string>
+    <string name="comparison_name_placeholder">例：牛乳、ティッシュ</string>
+    <string name="item_name">名前</string>
+    <string name="price_won">価格</string>
+    <string name="capacity_label">容量</string>
+    <string name="capacity_g_kg">容量 (g/kg)</string>
+    <string name="capacity_ml_l">容量 (ml/L)</string>
+    <string name="bundle_count_label">パック数</string>
+    <string name="bundle_capacity_label">パック容量</string>
+    <string name="pcs_bundle">個数 (パック)</string>
+    <string name="best_deal_title">最安値・高コスパ商品</string>
+    <string name="best_deal_desc">最高のコストパフォーマンスを提供する最安値の選択肢です ✨</string>
+    <string name="premium_upgrade_ad">プレミアムにアップグレード！広告なし＆バーコード比較 🚀</string>
+    <string name="save_desc">現在の比較対象を過去の比較履歴に保存します。</string>
+    <string name="comparison_type_select">比較の種類を選択:</string>
+    <string name="edit_comparison_name_title">比較名の変更 🏷️</string>
+    <string name="save_comparison_title">比較の保存 💾</string>
+    <string name="save_time">保存日時: %s</string>
+    <string name="basis">基準: %s</string>
+    <string name="field_entering">%sを入力中</string>
+    <string name="price_unit">円</string>
+    <string name="won_symbol">¥</string>
+    <string name="more">もっと見る</string>
+    <string name="keyboard_mode">キーボードモード</string>
+    <string name="mart_keypad">マート簡単キーパッド</string>
+    <string name="keypad_close">キーパッドを閉じる</string>
+    <string name="new_comparison_start">新しい比較を開始 ✨</string>
+    <string name="create">作成</string>
+    <string name="input_mode_toggle">入力モード切替</string>
+    <string name="edit_possible">編集可能</string>
+    <string name="delete">削除</string>
+    <string name="product_label">商品%s</string>
+    <string name="per_unit_format">当り%s</string>
+    <string name="cheaper_by_desc">他の商品と比べて約%s安いです 💰</string>
+    <string name="expensive_desc">(%1$s / %2$s 高い)</string>
+    <string name="back_press_exit_msg">もう一度戻るを押すとアプリが終了します。</string>
+    <string name="validation_empty_title">名前を入力してください。</string>
+    <string name="unit_settings_title">単位設定</string>
+    <string name="volume_small_label">体積 (小)</string>
+    <string name="volume_large_label">体積 (大)</string>
+    <string name="weight_large_label">重量 (大)</string>
+    <string name="weight_small_label">重量 (小)</string>
+
+    <!-- Tutorial / Onboarding strings -->
+    <string name="tutorial_title">アプリの使い方ガイド 📖</string>
+    <string name="tutorial_btn_next">次へ</string>
+    <string name="tutorial_btn_prev">前へ</string>
+    <string name="tutorial_btn_skip">スキップ</string>
+    <string name="tutorial_btn_done">始める</string>
+    <string name="tutorial_show_guide">ガイドを見る</string>
+
+    <string name="tutorial_welcome_title">単位計算機へようこそ！🎉</string>
+    <string name="tutorial_welcome_desc">容量、個数、単位が異なる商品の価格を簡単に比較し、最もお得な最安値商品を一目で見つけましょう！</string>
+
+    <string name="tutorial_home_units_title">1. カテゴリと基準単位量 ⚖️</string>
+    <string name="tutorial_home_units_desc">重量、体積、個数タブを選択し、その下の基準単位量（例：100g当り、1kg当り、100ml当り）から比較の基準を設定します。</string>
+
+    <string name="tutorial_home_best_title">2. リアルタイム BEST CHOICE 🏆</string>
+    <string name="tutorial_home_best_desc">各商品の価格と容量を入力すると、アプリが自動計算して最もコスパの良い商品に「BEST」バッジと節約額をリアルタイム表示します。</string>
+
+    <string name="tutorial_home_actions_title">3. 新規比較、商品追加、保存 💾</string>
+    <string name="tutorial_home_actions_desc">「新規比較」で画面をリセットし、「商品追加」で比較対象を増やせます。「比較保存」をタップすると、履歴に安全に保存されます。</string>
+
+    <string name="tutorial_history_title">4. 履歴の読込と順序変更 🗂️</string>
+    <string name="tutorial_history_desc">履歴タブでは、以前保存した比較データをタップするだけで瞬時に読み込めます。アイテムを長押しして上下にドラッグすることで、簡単に並び替えができます。</string>
+
+    <string name="tutorial_settings_title">5. カスタム単位設定 ⚙️</string>
+    <string name="tutorial_settings_desc">設定タブから、重量や体積の小口/大口単位（fl.oz、gal、oz、lbなど）をカスタマイズできます。変更は即座に商品カードへ自動反映されます！</string>
+</resources>

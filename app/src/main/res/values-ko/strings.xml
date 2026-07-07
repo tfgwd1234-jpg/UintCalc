@@ -1,0 +1,109 @@
+<resources>
+    <string name="app_name">단위 계산기</string>
+    <string name="smart_unit_title">스마트 단위 비교기</string>
+    <string name="category_weight">⚖️ 무게</string>
+    <string name="category_volume">🥤 부피</string>
+    <string name="category_count">📦 개수</string>
+    <string name="g_kg">g / kg</string>
+    <string name="ml_l">ml / L</string>
+    <string name="pcs">개</string>
+    <string name="comparison_standard_qty">비교 기준량</string>
+    <string name="per_100g">100g당</string>
+    <string name="per_10g">10g당</string>
+    <string name="per_1kg">1kg당</string>
+    <string name="per_100ml">100ml당</string>
+    <string name="per_10ml">10ml당</string>
+    <string name="per_1l">1L당</string>
+    <string name="per_1pc">1개당</string>
+    <string name="per_10pcs">10개당</string>
+    <string name="per_100pcs">100개당</string>
+    <string name="item_name_placeholder">상품명 입력...</string>
+    <string name="price_placeholder">가격을 입력하세요</string>
+    <string name="add_product">상품 추가</string>
+    <string name="save_comparison">비교 저장</string>
+    <string name="save">저장</string>
+    <string name="new_comparison">새 비교 추가</string>
+    <string name="tab_home">홈</string>
+    <string name="tab_history">히스토리</string>
+    <string name="tab_settings">설정</string>
+    <string name="settings_title">설정</string>
+    <string name="privacy_policy">개인정보처리방침</string>
+    <string name="contact_suggestions">문의 및 제안사항</string>
+    <string name="past_history_title">과거 비교 내역</string>
+    <string name="past_history_card_title">과거 비교 내역</string>
+    <string name="empty_history">비교 기록이 비어 있습니다.</string>
+    <string name="delete_comparison">비교 삭제</string>
+    <string name="delete_confirm_title">비교 내역 삭제 🗑️</string>
+    <string name="delete_confirm_msg">\'%s\'을 삭제하시겠습니까?</string>
+    <string name="cancel">취소</string>
+    <string name="close">닫기</string>
+    <string name="change">변경</string>
+    <string name="comparison_name">비교 이름</string>
+    <string name="comparison_name_placeholder">예: 우유 비교, 휴지 비교</string>
+    <string name="item_name">이름</string>
+    <string name="price_won">가격 (원)</string>
+    <string name="capacity_label">용량</string>
+    <string name="capacity_g_kg">용량(g/kg)</string>
+    <string name="capacity_ml_l">용량(ml/L)</string>
+    <string name="bundle_count_label">묶음 개수</string>
+    <string name="bundle_capacity_label">묶음용량</string>
+    <string name="pcs_bundle">개수(묶음)</string>
+    <string name="best_deal_title">최저가 가성비 상품</string>
+    <string name="best_deal_desc">가장 우수한 가성비를 제공하는 최저가 선택지입니다 ✨</string>
+    <string name="premium_upgrade_ad">Smart Unit 프리미엄 업그레이드! 광고 제거 &amp; 바코드 비교 🚀</string>
+    <string name="save_desc">현재 비교 대상을 과거 비교 내역에 저장합니다.</string>
+    <string name="comparison_type_select">비교 종류 선택:</string>
+    <string name="edit_comparison_name_title">비교 이름 변경 🏷️</string>
+    <string name="save_comparison_title">비교 저장 💾</string>
+    <string name="save_time">저장 일시: %s</string>
+    <string name="basis">기준: %s</string>
+    <string name="field_entering">%s 입력 중</string>
+    <string name="price_unit">원</string>
+    <string name="won_symbol">₩</string>
+    <string name="more">더 보기</string>
+    <string name="keyboard_mode">키보드 모드</string>
+    <string name="mart_keypad">마트 간편 키패드</string>
+    <string name="keypad_close">키패드 닫기</string>
+    <string name="new_comparison_start">새로운 비교 시작 ✨</string>
+    <string name="create">생성</string>
+    <string name="input_mode_toggle">입력 모드 전환</string>
+    <string name="edit_possible">수정 가능</string>
+    <string name="delete">삭제</string>
+    <string name="product_label">상품 %s</string>
+    <string name="per_unit_format">당 %s</string>
+    <string name="cheaper_by_desc">다른 상품 대비 약 %s 더 저렴합니다 💰</string>
+    <string name="expensive_desc">(%1$s / %2$s 비쌈)</string>
+    <string name="back_press_exit_msg">한번 더 뒤로가기를 누르시면 앱이 종료됩니다.</string>
+    <string name="validation_empty_title">이름을 입력해주세요.</string>
+    <string name="unit_settings_title">단위 설정</string>
+    <string name="volume_small_label">부피 (소량)</string>
+    <string name="volume_large_label">부피 (대량)</string>
+    <string name="weight_large_label">무게 (대량)</string>
+    <string name="weight_small_label">무게 (소량)</string>
+
+    <!-- Tutorial / Onboarding strings -->
+    <string name="tutorial_title">앱 사용 설명 가이드 📖</string>
+    <string name="tutorial_btn_next">다음</string>
+    <string name="tutorial_btn_prev">이전</string>
+    <string name="tutorial_btn_skip">건너뛰기</string>
+    <string name="tutorial_btn_done">시작하기</string>
+    <string name="tutorial_show_guide">도움말 보기</string>
+
+    <string name="tutorial_welcome_title">단위 계산기에 오신 것을 환영합니다! 🎉</string>
+    <string name="tutorial_welcome_desc">용량, 묶음 개수, 단위가 다른 상품들의 가성비를 한눈에 비교하고 가장 저렴한 최저가 상품을 찾아보세요!</string>
+
+    <string name="tutorial_home_units_title">1. 카테고리 및 기준량 선택 ⚖️</string>
+    <string name="tutorial_home_units_desc">무게, 부피, 개수 탭을 누른 후, 아래의 비교 기준량(예: 100g당, 1kg당, 100ml당)을 선택하여 비교 기준을 설정합니다.</string>
+
+    <string name="tutorial_home_best_title">2. 실시간 BEST CHOICE 🏆</string>
+    <string name="tutorial_home_best_desc">각 상품의 가격과 용량을 입력하면, 앱이 자동으로 기준량당 가격을 계산하여 가장 가성비가 높은 최저가 상품에 BEST 뱃지와 절약 금액을 노출합니다.</string>
+
+    <string name="tutorial_home_actions_title">3. 새로운 비교, 추가 및 저장 💾</string>
+    <string name="tutorial_home_actions_desc">\'새로운 비교\'로 초기화하고 새로운 계산을 시작하거나, \'상품 추가\'로 비교 대상을 늘릴 수 있습니다. \'비교 저장\'을 누르면 히스토리에 기록됩니다.</string>
+
+    <string name="tutorial_history_title">4. 불러오기 및 순서 변경 🗂️</string>
+    <string name="tutorial_history_desc">히스토리 탭에서 과거에 저장한 비교 내역을 클릭하면 즉시 불러옵니다. 항목을 길게 눌러 상하로 드래그하면 원하는 순서대로 배치할 수 있습니다.</string>
+
+    <string name="tutorial_settings_title">5. 맞춤 단위 설정 ⚙️</string>
+    <string name="tutorial_settings_desc">설정 탭에서 소량/대량 무게와 부피 단위(fl.oz, gal, oz, lb 등)를 커스텀할 수 있습니다. 변경된 단위는 상품 카드에 실시간 자동 반영됩니다!</string>
+</resources>

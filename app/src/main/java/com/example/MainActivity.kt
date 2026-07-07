@@ -20,6 +20,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // UI 우선 설정 (검은 화면 방지)
+        enableEdgeToEdge()
         
         // Initialize Room Database & Repository
         val database = AppDatabase.getDatabase(applicationContext)
@@ -31,16 +34,13 @@ class MainActivity : ComponentActivity() {
         }
 
         // Initialize GDPR/CCPA Consent Flow
+        // 광고 초기화 로직 분리 (메인 스레드 블로킹 방지)
         com.example.util.ConsentManager.gatherConsent(this, object : com.example.util.ConsentManager.OnConsentCheckCompleteListener {
             override fun onConsentCheckComplete() {
-                // Initialize Google Mobile Ads SDK
-                Thread {
-                    com.google.android.gms.ads.MobileAds.initialize(this@MainActivity)
-                }.start()
+                com.google.android.gms.ads.MobileAds.initialize(this@MainActivity)
             }
         })
 
-        enableEdgeToEdge()
         setContent {
             MyApplicationTheme {
                 ComparisonScreen(

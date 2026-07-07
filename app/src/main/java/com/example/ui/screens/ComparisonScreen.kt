@@ -107,7 +107,7 @@ fun ComparisonScreen(
         } else {
             val currentTime = System.currentTimeMillis()
             if (currentTime - lastBackPressTime < 2000) {
-                (context as? Activity)?.finish()
+                (context as? Activity)?.finishAffinity()
             } else {
                 lastBackPressTime = currentTime
                 Toast.makeText(context, exitMessage, Toast.LENGTH_SHORT).show()

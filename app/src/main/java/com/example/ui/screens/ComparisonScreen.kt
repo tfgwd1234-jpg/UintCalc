@@ -195,9 +195,9 @@ fun ComparisonScreen(
                 title = {
                     when (selectedTab) {
                         TabItem.HOME -> {
-                            val defaultSmartTitleEn = "Smart Unit Calculator"
-                            val defaultSmartTitleKo = "스마트 단위 비교기"
-                            val defaultSmartTitleJa = "スマート単位比較機"
+                            val defaultSmartTitleEn = "Unit Calculator"
+                            val defaultSmartTitleKo = "단위 계산기"
+                            val defaultSmartTitleJa = "単位計算機"
                             val isTitleEditable = session != null &&
                                     session.title != defaultSmartTitleKo &&
                                     session.title != defaultSmartTitleJa &&

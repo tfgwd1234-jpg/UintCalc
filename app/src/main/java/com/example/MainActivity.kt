@@ -34,7 +34,9 @@ class MainActivity : ComponentActivity() {
         com.example.util.ConsentManager.gatherConsent(this, object : com.example.util.ConsentManager.OnConsentCheckCompleteListener {
             override fun onConsentCheckComplete() {
                 // Initialize Google Mobile Ads SDK
-                com.google.android.gms.ads.MobileAds.initialize(this@MainActivity)
+                Thread {
+                    com.google.android.gms.ads.MobileAds.initialize(this@MainActivity)
+                }.start()
             }
         })
 

@@ -1004,7 +1004,7 @@ fun ComparisonScreen(
                                 .fillMaxWidth()
                                 .clickable {
                                     try {
-                                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://개인정보처리방침"))
+                                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://sites.google.com/view/unitcalc-privacy"))
                                         context.startActivity(intent)
                                     } catch (e: Exception) {
                                         // safe fallback

@@ -945,6 +945,59 @@ fun ComparisonScreen(
                             color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
                         )
 
+                        // In-App Review Card
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    val activity = context as? Activity
+                                    activity?.let {
+                                        val reviewManager = com.google.android.play.core.review.ReviewManagerFactory.create(it)
+                                        val request = reviewManager.requestReviewFlow()
+                                        request.addOnCompleteListener { task ->
+                                            if (task.isSuccessful) {
+                                                val reviewInfo = task.result
+                                                reviewManager.launchReviewFlow(it, reviewInfo)
+                                            }
+                                        }
+                                    }
+                                }
+                                .testTag("settings_in_app_review"),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant
+                            )
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(
+                                        imageVector = Icons.Default.Star,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.primary,
+                                        modifier = Modifier.size(24.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(12.dp))
+                                    Text(
+                                        text = stringResource(id = R.string.in_app_review),
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                }
+                                Icon(
+                                    imageVector = Icons.Default.ChevronRight,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+
                         // Privacy Policy Card
                         Card(
                             modifier = Modifier
@@ -998,7 +1051,7 @@ fun ComparisonScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    val subject = "$appName 비교 문의 및 제안사항"
+                                    val subject = context.getString(R.string.email_subject)
                                     val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
                                         data = Uri.parse("mailto:")
                                         putExtra(Intent.EXTRA_EMAIL, arrayOf("jjoooo.co@gmail.com"))

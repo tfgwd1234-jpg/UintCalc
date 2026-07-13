@@ -154,22 +154,9 @@ class ComparisonViewModel(private val repository: ComparisonRepository, private 
     }
 
     private suspend fun createAndSelectDefaultSession() {
-        val language = java.util.Locale.getDefault().language
-        val defaultTitle = when (language) {
-            "ko" -> "스마트 단위 비교기"
-            "ja" -> "スマート単位比較機"
-            else -> "Smart Unit Calculator"
-        }
-        val productAPrefix = when (language) {
-            "ko" -> "상품 A"
-            "ja" -> "商品A"
-            else -> "Product A"
-        }
-        val productBPrefix = when (language) {
-            "ko" -> "상품 B"
-            "ja" -> "商品B"
-            else -> "Product B"
-        }
+        val defaultTitle = application.getString(com.example.R.string.smart_unit_title)
+        val productAPrefix = application.getString(com.example.R.string.product_a)
+        val productBPrefix = application.getString(com.example.R.string.product_b)
         val defaultSession = ComparisonSession(
             title = defaultTitle,
             category = "WEIGHT",
@@ -206,30 +193,13 @@ class ComparisonViewModel(private val repository: ComparisonRepository, private 
     // Create a new session
     fun createNewSession(title: String, category: String = "WEIGHT") {
         viewModelScope.launch {
-            val language = java.util.Locale.getDefault().language
-            val defaultTitle = when (language) {
-                "ko" -> "스마트 단위 비교기"
-                "ja" -> "スマート単位比較機"
-                else -> "Smart Unit Calculator"
-            }
-            val productAPrefix = when (language) {
-                "ko" -> "상품 A"
-                "ja" -> "商品A"
-                else -> "Product A"
-            }
-            val productBPrefix = when (language) {
-                "ko" -> "상품 B"
-                "ja" -> "商品B"
-                else -> "Product B"
-            }
+            val defaultTitle = application.getString(com.example.R.string.smart_unit_title)
+            val productAPrefix = application.getString(com.example.R.string.product_a)
+            val productBPrefix = application.getString(com.example.R.string.product_b)
             val defaultUnitUnit = when (category) {
                 "WEIGHT" -> weightSmall.value
                 "VOLUME" -> volumeSmall.value
-                else -> when (language) {
-                    "ko" -> "개"
-                    "ja" -> "個"
-                    else -> "pcs"
-                }
+                else -> application.getString(com.example.R.string.pcs)
             }
             val (refVal, refUnit) = when (category) {
                 "WEIGHT" -> Pair(100.0, weightSmall.value)
@@ -274,12 +244,7 @@ class ComparisonViewModel(private val repository: ComparisonRepository, private 
     fun saveActiveSessionAndCreateNew(title: String) {
         val current = activeSession.value ?: return
         viewModelScope.launch {
-            val language = java.util.Locale.getDefault().language
-            val defaultTitle = when (language) {
-                "ko" -> "스마트 단위 비교기"
-                "ja" -> "スマート単位比較機"
-                else -> "Smart Unit Calculator"
-            }
+            val defaultTitle = application.getString(com.example.R.string.smart_unit_title)
             // 1. Save the current session
             repository.updateSession(
                 current.copy(
@@ -290,24 +255,12 @@ class ComparisonViewModel(private val repository: ComparisonRepository, private 
             )
 
             // 2. Start a new unsaved session automatically
-            val productAPrefix = when (language) {
-                "ko" -> "상품 A"
-                "ja" -> "商品A"
-                else -> "Product A"
-            }
-            val productBPrefix = when (language) {
-                "ko" -> "상품 B"
-                "ja" -> "商品B"
-                else -> "Product B"
-            }
+            val productAPrefix = application.getString(com.example.R.string.product_a)
+            val productBPrefix = application.getString(com.example.R.string.product_b)
             val defaultUnitUnit = when (current.category) {
                 "WEIGHT" -> weightSmall.value
                 "VOLUME" -> volumeSmall.value
-                else -> when (language) {
-                    "ko" -> "개"
-                    "ja" -> "個"
-                    else -> "pcs"
-                }
+                else -> application.getString(com.example.R.string.pcs)
             }
             val (refVal, refUnit) = when (current.category) {
                 "WEIGHT" -> Pair(100.0, weightSmall.value)
@@ -458,16 +411,11 @@ class ComparisonViewModel(private val repository: ComparisonRepository, private 
         val sessionId = _activeSessionId.value ?: return
         val session = activeSession.value ?: return
         val category = session.category
-        val language = java.util.Locale.getDefault().language
         val defaultUnit = session.referenceUnit
         viewModelScope.launch {
             val items = activeItems.value
             val nextLetter = if (items.size < 26) ('A'.code + items.size).toChar().toString() else (items.size + 1).toString()
-            val defaultItemName = when (language) {
-                "ko" -> "상품 $nextLetter"
-                "ja" -> "商品$nextLetter"
-                else -> "Product $nextLetter"
-            }
+            val defaultItemName = application.getString(com.example.R.string.product_default, nextLetter)
             repository.insertItem(
                 ComparisonItem(
                     sessionId = sessionId,

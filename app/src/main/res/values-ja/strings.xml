@@ -106,4 +106,10 @@
 
     <string name="tutorial_settings_title">5. カスタム単位設定 ⚙️</string>
     <string name="tutorial_settings_desc">設定タブから、重量や体積の小口/大口単位（fl.oz、gal、oz、lbなど）をカスタマイズできます。変更は即座に商品カードへ自動反映されます！</string>
+
+    <string name="product_a">商品A</string>
+    <string name="product_b">商品B</string>
+    <string name="product_default">商品%s</string>
+    <string name="email_subject">UnitCalcのお問い合わせと提案</string>
+    <string name="in_app_review">アプリの評価とレビュー</string>
 </resources>

@@ -106,4 +106,10 @@
 
     <string name="tutorial_settings_title">5. 맞춤 단위 설정 ⚙️</string>
     <string name="tutorial_settings_desc">설정 탭에서 소량/대량 무게와 부피 단위(fl.oz, gal, oz, lb 등)를 커스텀할 수 있습니다. 변경된 단위는 상품 카드에 실시간 자동 반영됩니다!</string>
+
+    <string name="product_a">상품 A</string>
+    <string name="product_b">상품 B</string>
+    <string name="product_default">상품 %s</string>
+    <string name="email_subject">UnitCalc 문의 및 제안사항</string>
+    <string name="in_app_review">앱 평가 및 리뷰 작성</string>
 </resources>

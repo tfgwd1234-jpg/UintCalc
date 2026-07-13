@@ -106,4 +106,10 @@
 
     <string name="tutorial_settings_title">5. Custom Settings ⚙️</string>
     <string name="tutorial_settings_desc">Go to Settings to customize small and large units for Weight and Volume (e.g., fl.oz, gal, oz, lb). All product inputs will update automatically!</string>
+
+    <string name="product_a">Product A</string>
+    <string name="product_b">Product B</string>
+    <string name="product_default">Product %s</string>
+    <string name="email_subject">UnitCalc Inquiries and Suggestions</string>
+    <string name="in_app_review">Rate Us / Review</string>
 </resources>

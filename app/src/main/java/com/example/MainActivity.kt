@@ -37,7 +37,9 @@ class MainActivity : ComponentActivity() {
         // 광고 초기화 로직 분리 (메인 스레드 블로킹 방지)
         com.example.util.ConsentManager.gatherConsent(this, object : com.example.util.ConsentManager.OnConsentCheckCompleteListener {
             override fun onConsentCheckComplete() {
-                com.google.android.gms.ads.MobileAds.initialize(this@MainActivity)
+                if (com.example.util.ConsentManager.canRequestAds()) {
+                    com.google.android.gms.ads.MobileAds.initialize(this@MainActivity)
+                }
             }
         })
 

@@ -130,4 +130,6 @@ dependencies {
   "ksp"(libs.moshi.kotlin.codegen)
   implementation(libs.play.services.ads)
   implementation(libs.user.messaging.platform)
+  //인앱리뷰
+  implementation("com.google.android.play:review-ktx:2.0.1")
 }

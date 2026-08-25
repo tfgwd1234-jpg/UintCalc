@@ -48,8 +48,8 @@
     <string name="bundle_count_label">묶음 개수</string>
     <string name="bundle_capacity_label">묶음용량</string>
     <string name="pcs_bundle">개수(묶음)</string>
-    <string name="best_deal_title">최저가 가성비 상품</string>
-    <string name="best_deal_desc">가장 우수한 가성비를 제공하는 최저가 선택지입니다 ✨</string>
+
+
     <string name="premium_upgrade_ad">Smart Unit 프리미엄 업그레이드! 광고 제거 &amp; 바코드 비교 🚀</string>
     <string name="save_desc">현재 비교 대상을 과거 비교 내역에 저장합니다.</string>
     <string name="comparison_type_select">비교 종류 선택:</string>
@@ -112,4 +112,15 @@
     <string name="product_default">상품 %s</string>
     <string name="email_subject">UnitCalc 문의 및 제안사항</string>
     <string name="in_app_review">앱 평가 및 리뷰 작성</string>
+    <string name="reset">초기화</string>
+    <string name="reset_confirm_title">초기화</string>
+    <string name="reset_confirm_msg">입력된 값이 모두 지워집니다.</string>
+    <string name="yes">예</string>
+    <string name="no">아니오</string>
+    <string name="share_app">앱 공유하기</string>
+    <string name="share_app_message">쇼핑할때 필수 앱 함께 사용해요! https://play.google.com/store/apps/details?id=com.joo.unitcalc</string>
+    <string name="update_dialog_title">업데이트 안내</string>
+    <string name="update_dialog_msg">더 나은 앱 사용을 위해 업데이트가 필요합니다.</string>
+    <string name="update_dialog_btn">업데이트 하기</string>
+    <string name="exit_app">앱 종료</string>
 </resources>

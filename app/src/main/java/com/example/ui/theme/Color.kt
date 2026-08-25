@@ -36,9 +36,8 @@ val PastelOutlineVariantLight = Color(0xFFECD8DB)
 val PastelOutlineDark = Color(0xFF5A4B4D)
 val PastelOutlineVariantDark = Color(0xFF7B6669)
 
-// Best Choice Highlights - soft warm sage green
-val PastelBestBg = Color(0xFFEAF5E7) // Softest pastel green
-val PastelBestBorder = Color(0xFFCDDEC7)
-val PastelBestText = Color(0xFF4C7440)
-val PastelBestTextDark = Color(0xFF22351E)
+// Best Choice Highlights - distinct, fresh pastel mint green with crisp borders
+val PastelBestBg = Color(0xFFE3F7E9) // Eye-catching fresh pastel mint green
+val PastelBestBorder = Color(0xFF52B788) // Clear, distinctive sage-green border
+val PastelBestText = Color(0xFF1E6F40) // High-contrast forest green text and badge
 

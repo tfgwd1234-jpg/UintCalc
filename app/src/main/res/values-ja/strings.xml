@@ -48,8 +48,8 @@
     <string name="bundle_count_label">パック数</string>
     <string name="bundle_capacity_label">パック容量</string>
     <string name="pcs_bundle">個数 (パック)</string>
-    <string name="best_deal_title">最安値・高コスパ商品</string>
-    <string name="best_deal_desc">最高のコストパフォーマンスを提供する最安値の選択肢です ✨</string>
+
+
     <string name="premium_upgrade_ad">プレミアムにアップグレード！広告なし＆バーコード比較 🚀</string>
     <string name="save_desc">現在の比較対象を過去の比較履歴に保存します。</string>
     <string name="comparison_type_select">比較の種類を選択:</string>
@@ -112,4 +112,15 @@
     <string name="product_default">商品%s</string>
     <string name="email_subject">UnitCalcのお問い合わせと提案</string>
     <string name="in_app_review">アプリの評価とレビュー</string>
+    <string name="reset">リセット</string>
+    <string name="reset_confirm_title">リセット</string>
+    <string name="reset_confirm_msg">入力された値がすべて削除されます。</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
+    <string name="share_app">アプリを共有</string>
+    <string name="share_app_message">お買い物に必須のアプリを一緒に使いましょう！ https://play.google.com/store/apps/details?id=com.joo.unitcalc</string>
+    <string name="update_dialog_title">アップデートのお知らせ</string>
+    <string name="update_dialog_msg">より快適にご利用いただくため、アップデートが必要です。</string>
+    <string name="update_dialog_btn">今すぐアップデート</string>
+    <string name="exit_app">アプリを終了</string>
 </resources>

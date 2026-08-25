@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.data.entity.ComparisonItem
 import com.example.data.entity.ComparisonSession
 import com.example.data.repository.ComparisonRepository
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.remoteConfigSettings
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -19,6 +21,7 @@ class ComparisonViewModel(private val repository: ComparisonRepository, private 
     val weightSmall = MutableStateFlow(sharedPrefs.getString("weight_small", "g") ?: "g")
 
     val hasSeenTutorial = MutableStateFlow(sharedPrefs.getBoolean("has_seen_tutorial", false))
+    val forceUpdateRequired = MutableStateFlow(false)
 
     fun setHasSeenTutorial(seen: Boolean) {
         sharedPrefs.edit().putBoolean("has_seen_tutorial", seen).apply()
@@ -141,15 +144,81 @@ class ComparisonViewModel(private val repository: ComparisonRepository, private 
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     init {
+        checkForForceUpdate()
         // Initialize with default session if none exists
         viewModelScope.launch {
-            allSessions.collectLatest { sessions ->
+            allSessions.collect { sessions ->
                 if (sessions.isEmpty()) {
                     createAndSelectDefaultSession()
-                } else if (_activeSessionId.value == null) {
-                    _activeSessionId.value = sessions.first().id
+                } else {
+                    if (_activeSessionId.value == null) {
+                        _activeSessionId.value = sessions.first().id
+                    }
+                    val currentId = _activeSessionId.value
+                    if (currentId != null) {
+                        val session = sessions.find { it.id == currentId }
+                        if (session != null) {
+                            ensureMinimumItems(session.id, session.referenceUnit)
+                        }
+                    }
                 }
             }
+        }
+    }
+
+    private fun checkForForceUpdate() {
+        try {
+            val remoteConfig = FirebaseRemoteConfig.getInstance()
+            val configSettings = remoteConfigSettings {
+                minimumFetchIntervalInSeconds = 1 //Remote Config 시간 설정(3600초=1시간)
+            }
+            remoteConfig.setConfigSettingsAsync(configSettings)
+            remoteConfig.setDefaultsAsync(mapOf("min_version" to 1L))
+            remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+                try {
+                    val minVersion = remoteConfig.getLong("min_version")
+                    val currentVersionCode = try {
+                        val pInfo = application.packageManager.getPackageInfo(application.packageName, 0)
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                            pInfo.longVersionCode
+                        } else {
+                            @Suppress("DEPRECATION")
+                            pInfo.versionCode.toLong()
+                        }
+                    } catch (e: Exception) {
+                        com.example.BuildConfig.VERSION_CODE.toLong()
+                    }
+
+                    if (currentVersionCode < minVersion) {
+                        forceUpdateRequired.value = true
+                    }
+                } catch (e: Exception) {
+                    // Safe fallback
+                }
+            }
+        } catch (e: Exception) {
+            // Safe fallback if Firebase uninitialized
+        }
+    }
+
+    private suspend fun ensureMinimumItems(sessionId: Int, defaultUnit: String) {
+        val currentItems = repository.getItemsForSession(sessionId).first()
+        val productAPrefix = application.getString(com.example.R.string.product_a)
+        val productBPrefix = application.getString(com.example.R.string.product_b)
+        val defaultNames = listOf(productAPrefix, productBPrefix)
+
+        for (i in currentItems.size until 2) {
+            val name = if (i < defaultNames.size) defaultNames[i] else application.getString(com.example.R.string.product_default, ('A'.code + i).toChar().toString())
+            repository.insertItem(
+                ComparisonItem(
+                    sessionId = sessionId,
+                    name = name,
+                    price = 0.0,
+                    capacity = 0.0,
+                    unit = defaultUnit,
+                    bundleCount = 1
+                )
+            )
         }
     }
 
@@ -165,9 +234,8 @@ class ComparisonViewModel(private val repository: ComparisonRepository, private 
             isSaved = false
         )
         val sessionId = repository.insertSession(defaultSession).toInt()
-        _activeSessionId.value = sessionId
 
-        // Add 2 default items
+        // Add 2 default items (Product A & Product B)
         repository.insertItem(
             ComparisonItem(
                 sessionId = sessionId,
@@ -188,6 +256,7 @@ class ComparisonViewModel(private val repository: ComparisonRepository, private 
                 bundleCount = 1
             )
         )
+        _activeSessionId.value = sessionId
     }
 
     // Create a new session
@@ -214,7 +283,6 @@ class ComparisonViewModel(private val repository: ComparisonRepository, private 
                 isSaved = false
             )
             val sessionId = repository.insertSession(newSession).toInt()
-            _activeSessionId.value = sessionId
 
             // Add 2 default items matching category
             repository.insertItem(
@@ -237,6 +305,7 @@ class ComparisonViewModel(private val repository: ComparisonRepository, private 
                     bundleCount = 1
                 )
             )
+            _activeSessionId.value = sessionId
         }
     }
 
@@ -275,7 +344,6 @@ class ComparisonViewModel(private val repository: ComparisonRepository, private 
                 isSaved = false
             )
             val sessionId = repository.insertSession(newSession).toInt()
-            _activeSessionId.value = sessionId
 
             // Add 2 default items
             repository.insertItem(
@@ -298,6 +366,7 @@ class ComparisonViewModel(private val repository: ComparisonRepository, private 
                     bundleCount = 1
                 )
             )
+            _activeSessionId.value = sessionId
         }
     }
 
@@ -315,6 +384,12 @@ class ComparisonViewModel(private val repository: ComparisonRepository, private 
     // Select an existing session
     fun selectSession(sessionId: Int) {
         _activeSessionId.value = sessionId
+        viewModelScope.launch {
+            val session = repository.allSessions.first().find { it.id == sessionId }
+            if (session != null) {
+                ensureMinimumItems(session.id, session.referenceUnit)
+            }
+        }
     }
 
     // Rename active session
@@ -440,6 +515,37 @@ class ComparisonViewModel(private val repository: ComparisonRepository, private 
     fun deleteItem(item: ComparisonItem) {
         viewModelScope.launch {
             repository.deleteItem(item)
+        }
+    }
+
+    // Reset the active session items to blank initial state (Product A & Product B)
+    fun resetActiveSession() {
+        val session = activeSession.value ?: return
+        viewModelScope.launch {
+            val items = activeItems.value
+            val productAPrefix = application.getString(com.example.R.string.product_a)
+            val productBPrefix = application.getString(com.example.R.string.product_b)
+            val defaultNames = listOf(productAPrefix, productBPrefix)
+
+            items.forEachIndexed { index, item ->
+                if (index < 2) {
+                    val defaultName = if (index < defaultNames.size) defaultNames[index] else application.getString(com.example.R.string.product_default, ('A'.code + index).toChar().toString())
+                    repository.updateItem(
+                        item.copy(
+                            name = defaultName,
+                            price = 0.0,
+                            capacity = 0.0,
+                            unit = session.referenceUnit,
+                            bundleCount = 1
+                        )
+                    )
+                } else {
+                    repository.deleteItem(item)
+                }
+            }
+            if (items.size < 2) {
+                ensureMinimumItems(session.id, session.referenceUnit)
+            }
         }
     }
 }

@@ -48,8 +48,6 @@
     <string name="bundle_count_label">Bundle Count</string>
     <string name="bundle_capacity_label">Bundle Capacity</string>
     <string name="pcs_bundle">Count (Bundle)</string>
-    <string name="best_deal_title">Best Deal Choice</string>
-    <string name="best_deal_desc">This provides the best value for your money ✨</string>
     <string name="premium_upgrade_ad">Upgrade to Premium! Remove Ads &amp; Compare via Barcode 🚀</string>
     <string name="save_desc">Save current comparison to your history.</string>
     <string name="comparison_type_select">Select Comparison Type:</string>
@@ -112,4 +110,15 @@
     <string name="product_default">Product %s</string>
     <string name="email_subject">UnitCalc Inquiries and Suggestions</string>
     <string name="in_app_review">Rate Us / Review</string>
+    <string name="reset">Reset</string>
+    <string name="reset_confirm_title">Reset</string>
+    <string name="reset_confirm_msg">All entered values will be deleted.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="share_app">Share App</string>
+    <string name="share_app_message">Must-have app for smart shopping! https://play.google.com/store/apps/details?id=com.joo.unitcalc</string>
+    <string name="update_dialog_title">Update Required</string>
+    <string name="update_dialog_msg">An update is required for a better app experience.</string>
+    <string name="update_dialog_btn">Update Now</string>
+    <string name="exit_app">Exit App</string>
 </resources>

@@ -17,7 +17,7 @@ android {
     applicationId = "com.joo.unitcalc"
     minSdk = 24
     targetSdk = 36
-    versionCode = 1
+    versionCode = 2
     versionName = "1.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -79,6 +79,7 @@ dependencies {
   implementation(platform(libs.androidx.compose.bom))
   implementation(platform(libs.firebase.bom))
   implementation(libs.firebase.analytics)
+  implementation(libs.firebase.config)
   // implementation(libs.accompanist.permissions)
   implementation(libs.androidx.activity.compose)
   // implementation(libs.androidx.camera.camera2)
@@ -130,6 +131,7 @@ dependencies {
   "ksp"(libs.moshi.kotlin.codegen)
   implementation(libs.play.services.ads)
   implementation(libs.user.messaging.platform)
+  implementation(libs.androidx.fragment.ktx)
   //인앱리뷰
   implementation("com.google.android.play:review-ktx:2.0.1")
 }

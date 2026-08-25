@@ -17,6 +17,8 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyColumn
@@ -61,6 +63,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.data.entity.ComparisonItem
 import com.example.data.entity.ComparisonSession
@@ -88,6 +91,7 @@ fun ComparisonScreen(
     val wtLarge by viewModel.weightLarge.collectAsStateWithLifecycle()
     val wtSmall by viewModel.weightSmall.collectAsStateWithLifecycle()
     val hasSeenTutorial by viewModel.hasSeenTutorial.collectAsStateWithLifecycle()
+    val forceUpdateRequired by viewModel.forceUpdateRequired.collectAsStateWithLifecycle()
 
     val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
@@ -117,6 +121,7 @@ fun ComparisonScreen(
     var showRenameDialog by remember { mutableStateOf(false) }
     var showNewSessionDialog by remember { mutableStateOf(false) }
     var showSaveComparisonDialog by remember { mutableStateOf(false) }
+    var showResetConfirmDialog by remember { mutableStateOf(false) }
     var sessionToDeleteConfirm by remember { mutableStateOf<ComparisonSession?>(null) }
     var renameText by remember { mutableStateOf("") }
     var saveComparisonTitle by remember { mutableStateOf("") }
@@ -151,8 +156,6 @@ fun ComparisonScreen(
         }
     }
 
-    val bestResult = comparisonResults.firstOrNull { it.isBest }
-
     // Keep inputs synced
     // To prevent cursor jumping and text formatting quirks, we maintain localized text state maps
     val itemPriceStates = remember { mutableStateMapOf<Int, String>() }
@@ -185,7 +188,9 @@ fun ComparisonScreen(
     }
 
     Scaffold(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .imePadding(),
         topBar = {
             TopAppBar(
                 modifier = Modifier
@@ -506,21 +511,6 @@ fun ComparisonScreen(
                             verticalArrangement = Arrangement.spacedBy(12.dp),
                             contentPadding = PaddingValues(bottom = 24.dp)
                         ) {
-                            item {
-                                AnimatedVisibility(
-                                    visible = bestResult != null && bestResult.referencePrice > 0,
-                                    enter = expandVertically() + fadeIn(),
-                                    exit = shrinkVertically() + fadeOut()
-                                ) {
-                                    bestResult?.let { best ->
-                                        BestWinnerCard(
-                                            result = best,
-                                            refValue = session.referenceValue,
-                                            refUnit = session.referenceUnit
-                                        )
-                                    }
-                                }
-                            }
                             items(comparisonResults, key = { it.item.id }) { result ->
                                 val itemId = result.item.id
                                 ComparisonItemCard(
@@ -626,6 +616,32 @@ fun ComparisonScreen(
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(stringResource(id = R.string.save_comparison), fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                                }
+                            }
+
+                            item {
+                                OutlinedButton(
+                                    onClick = {
+                                        showResetConfirmDialog = true
+                                    },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 4.dp)
+                                        .testTag("reset_comparison_button"),
+                                    shape = RoundedCornerShape(14.dp),
+                                    colors = ButtonDefaults.outlinedButtonColors(
+                                        contentColor = MaterialTheme.colorScheme.error
+                                    ),
+                                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.error.copy(alpha = 0.5f)),
+                                    contentPadding = PaddingValues(vertical = 12.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Refresh,
+                                        contentDescription = stringResource(id = R.string.reset),
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(stringResource(id = R.string.reset), fontSize = 14.sp, fontWeight = FontWeight.Bold)
                                 }
                             }
                         }
@@ -945,21 +961,16 @@ fun ComparisonScreen(
                             color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
                         )
 
-                        // In-App Review Card
+                        // In-App Review Card (Direct Store Link)
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    val activity = context as? Activity
-                                    activity?.let {
-                                        val reviewManager = com.google.android.play.core.review.ReviewManagerFactory.create(it)
-                                        val request = reviewManager.requestReviewFlow()
-                                        request.addOnCompleteListener { task ->
-                                            if (task.isSuccessful) {
-                                                val reviewInfo = task.result
-                                                reviewManager.launchReviewFlow(it, reviewInfo)
-                                            }
-                                        }
+                                    try {
+                                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.joo.unitcalc"))
+                                        context.startActivity(intent)
+                                    } catch (e: Exception) {
+                                        // safe fallback
                                     }
                                 }
                                 .testTag("settings_in_app_review"),
@@ -985,6 +996,60 @@ fun ComparisonScreen(
                                     Spacer(modifier = Modifier.width(12.dp))
                                     Text(
                                         text = stringResource(id = R.string.in_app_review),
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                }
+                                Icon(
+                                    imageVector = Icons.Default.ChevronRight,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+
+                        // Share App Card
+                        val shareMessage = stringResource(id = R.string.share_app_message)
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    try {
+                                        val sendIntent = Intent().apply {
+                                            action = Intent.ACTION_SEND
+                                            putExtra(Intent.EXTRA_TEXT, shareMessage)
+                                            type = "text/plain"
+                                        }
+                                        val shareIntent = Intent.createChooser(sendIntent, null)
+                                        context.startActivity(shareIntent)
+                                    } catch (e: Exception) {
+                                        // safe fallback
+                                    }
+                                }
+                                .testTag("settings_share_app"),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant
+                            )
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(
+                                        imageVector = Icons.Default.Share,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.primary,
+                                        modifier = Modifier.size(24.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(12.dp))
+                                    Text(
+                                        text = stringResource(id = R.string.share_app),
                                         style = MaterialTheme.typography.bodyLarge,
                                         fontWeight = FontWeight.Bold,
                                         color = MaterialTheme.colorScheme.onSurface
@@ -1323,6 +1388,51 @@ fun ComparisonScreen(
         )
     }
 
+    // Reset Confirmation Dialog
+    if (showResetConfirmDialog) {
+        AlertDialog(
+            onDismissRequest = { showResetConfirmDialog = false },
+            title = {
+                Text(stringResource(id = R.string.reset_confirm_title), fontWeight = FontWeight.Bold)
+            },
+            text = {
+                Text(
+                    text = stringResource(id = R.string.reset_confirm_msg),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        itemPriceStates.clear()
+                        itemCapacityStates.clear()
+                        itemBundleStates.clear()
+                        itemNameStates.clear()
+                        activeField = null
+                        viewModel.resetActiveSession()
+                        showResetConfirmDialog = false
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error,
+                        contentColor = MaterialTheme.colorScheme.onError
+                    ),
+                    modifier = Modifier.testTag("reset_confirm_yes_button")
+                ) {
+                    Text(stringResource(id = R.string.yes))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { showResetConfirmDialog = false },
+                    modifier = Modifier.testTag("reset_confirm_no_button")
+                ) {
+                    Text(stringResource(id = R.string.no))
+                }
+            }
+        )
+    }
+
     // Tutorial Onboarding & Manual Dialog
     if (!hasSeenTutorial) {
         TutorialDialog(
@@ -1334,6 +1444,75 @@ fun ComparisonScreen(
         TutorialDialog(
             onDismiss = {
                 showTutorialManual = false
+            }
+        )
+    }
+
+    // Force Update Dialog (Firebase Remote Config min_version > versionCode)
+    if (forceUpdateRequired) {
+        AlertDialog(
+            onDismissRequest = { /* Force update: non-dismissible */ },
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false
+            ),
+            title = {
+                Text(
+                    text = stringResource(id = R.string.update_dialog_title),
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+                Text(
+                    text = stringResource(id = R.string.update_dialog_msg),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            },
+            confirmButton = {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Button(
+                        onClick = {
+                            try {
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.joo.unitcalc"))
+                                context.startActivity(intent)
+                            } catch (e: Exception) {
+                                // Safe fallback
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        ),
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("force_update_button")
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.update_dialog_btn),
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    OutlinedButton(
+                        onClick = {
+                            (context as? Activity)?.finishAffinity()
+                        },
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("force_update_exit_button")
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.exit_app),
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
             }
         )
     }
@@ -1450,113 +1629,6 @@ fun ReferenceBaseBar(
 }
 
 @Composable
-fun BestWinnerCard(
-    result: UnitCalculator.ComparisonResult,
-    refValue: Double,
-    refUnit: String
-) {
-    val titleText = result.item.name.ifBlank { stringResource(id = R.string.best_deal_title) }
-    
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .border(width = 1.dp, color = PastelBestBorder, shape = RoundedCornerShape(28.dp))
-            .testTag("best_winner_card"),
-        shape = RoundedCornerShape(28.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = PastelBestBg
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp)
-        ) {
-            // Top Row: Best Choice tag and item label
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier
-                        .background(PastelBestText, CircleShape)
-                        .padding(horizontal = 10.dp, vertical = 4.dp)
-                ) {
-                    Text(
-                        text = "BEST CHOICE",
-                        color = Color.White,
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            letterSpacing = 1.sp
-                        )
-                    )
-                }
-                
-                Text(
-                    text = titleText,
-                    color = PastelBestText,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 13.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-            
-            Spacer(modifier = Modifier.height(14.dp))
-            
-            // Middle Area: Huge Display Price
-            Row(
-                verticalAlignment = Alignment.Bottom
-            ) {
-                val currencySymbol = stringResource(id = R.string.won_symbol)
-                Text(
-                    text = "$currencySymbol ${UnitCalculator.formatPrice(result.referencePrice)}",
-                    style = MaterialTheme.typography.headlineLarge.copy(
-                        fontWeight = FontWeight.Black,
-                        color = PastelBestTextDark,
-                        letterSpacing = (-1).sp
-                    )
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                val localizedUnit = when (refUnit) {
-                    "개", "pcs", "個" -> stringResource(id = R.string.pcs)
-                    else -> refUnit
-                }
-                Text(
-                    text = "/ ${refValue.toString().removeSuffix(".0")}$localizedUnit",
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = PastelBestTextDark.copy(alpha = 0.7f)
-                    ),
-                    modifier = Modifier.padding(bottom = 4.dp)
-                )
-            }
-            
-            Spacer(modifier = Modifier.height(6.dp))
-            
-            // Bottom Area: Info / Saving difference
-            val savingText = if (result.percentageDifferenceText.isNotEmpty() && result.percentageDifferenceText != "0%") {
-                stringResource(id = R.string.cheaper_by_desc, result.percentageDifferenceText)
-            } else {
-                stringResource(id = R.string.best_deal_desc)
-            }
-            
-            Text(
-                text = savingText,
-                style = MaterialTheme.typography.bodyMedium,
-                color = PastelBestText,
-                fontWeight = FontWeight.Bold,
-                fontSize = 13.sp
-            )
-        }
-    }
-}
-
-@Composable
 fun KeyboardModeRow(
     useMartKeypad: Boolean,
     onToggle: (Boolean) -> Unit,
@@ -1640,8 +1712,15 @@ fun ComparisonItemCard(
 ) {
     val isBest = result.isBest && result.isValid
     val focusManager = LocalFocusManager.current
+    val bringIntoViewRequester = remember { BringIntoViewRequester() }
+    val coroutineScope = rememberCoroutineScope()
+    val bringCardIntoView: () -> Unit = {
+        coroutineScope.launch {
+            bringIntoViewRequester.bringIntoView()
+        }
+    }
     val borderColor = if (isBest) PastelBestBorder else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.8f)
-    val borderThickness = if (isBest) 1.5.dp else 1.dp
+    val borderThickness = if (isBest) 2.dp else 1.dp
     val backgroundBrush = if (isBest) {
         Brush.verticalGradient(listOf(PastelBestBg, PastelBestBg))
     } else {
@@ -1651,6 +1730,7 @@ fun ComparisonItemCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .bringIntoViewRequester(bringIntoViewRequester)
             .border(width = borderThickness, color = borderColor, shape = RoundedCornerShape(16.dp))
             .testTag("item_card_${result.item.id}"),
         shape = RoundedCornerShape(16.dp),
@@ -1698,6 +1778,11 @@ fun ComparisonItemCard(
                             ),
                             modifier = Modifier
                                 .weight(1f)
+                                .onFocusChanged { focusState ->
+                                    if (focusState.isFocused) {
+                                        bringCardIntoView()
+                                    }
+                                }
                                 .testTag("name_field_${result.item.id}"),
                             decorationBox = { innerTextField ->
                                 Row(
@@ -1765,7 +1850,8 @@ fun ComparisonItemCard(
                         keyboardActions = KeyboardActions(
                             onNext = { focusManager.moveFocus(FocusDirection.Next) }
                         ),
-                        visualTransformation = ThousandsCommaTransformation()
+                        visualTransformation = ThousandsCommaTransformation(),
+                        onFocused = bringCardIntoView
                     )
 
                     // Capacity Field
@@ -1794,7 +1880,8 @@ fun ComparisonItemCard(
                         keyboardActions = KeyboardActions(
                             onNext = { focusManager.moveFocus(FocusDirection.Next) }
                         ),
-                        visualTransformation = ThousandsCommaTransformation()
+                        visualTransformation = ThousandsCommaTransformation(),
+                        onFocused = bringCardIntoView
                     )
 
                     // Bundle/Pack Count Field
@@ -1815,7 +1902,8 @@ fun ComparisonItemCard(
                         ),
                         keyboardActions = KeyboardActions(
                             onDone = { focusManager.clearFocus() }
-                        )
+                        ),
+                        onFocused = bringCardIntoView
                     )
                 }
 
@@ -1890,7 +1978,8 @@ fun InputGridCell(
         imeAction = ImeAction.Done
     ),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    onFocused: (() -> Unit)? = null
 ) {
     Column(
         modifier = modifier,
@@ -1959,7 +2048,13 @@ fun InputGridCell(
                         color = MaterialTheme.colorScheme.onSurface,
                         fontWeight = FontWeight.Medium
                     ),
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onFocusChanged { focusState ->
+                            if (focusState.isFocused) {
+                                onFocused?.invoke()
+                            }
+                        },
                     keyboardOptions = keyboardOptions,
                     keyboardActions = keyboardActions,
                     visualTransformation = visualTransformation,
